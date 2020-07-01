@@ -28,7 +28,7 @@ Functional Description
 ======================
 
 The Multi-Sandbox process extends the overall process described in
-:ref:`the overview of the platform process <processOverviewId>`.
+:ref:`the overview of the platform process <build_process_overview>`.
 
 .. figure:: images/process-multiapp-overview.*
    :alt: Multi-Sandbox Process
@@ -125,7 +125,7 @@ Use
 A classpath variable named ``KF-1.4`` is available.
 
 This library provides a set of options. Refer to the chapter
-:ref:`workbenchLaunchOptions` which lists all available options.
+:ref:`application_options` which lists all available options.
 
 ..
    | Copyright 2008-2020, MicroEJ Corp. Content in this space is free 

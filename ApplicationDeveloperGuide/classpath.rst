@@ -459,6 +459,8 @@ application developer as module dependencies (see :ref:`section.ivy.dependency.m
 
    MicroEJ Foundation Libraries and Add-On Libraries
 
+.. _central_repository:
+
 MicroEJ Central Repository
 ==========================
 
@@ -469,10 +471,7 @@ organization ``ej.api``. All other artifacts are Add-On Libraries.
 
 For more information, please visit `<https://developer.microej.com/central-repository/>`_.
 
-Offline Repository
-==================
-
-By default, MicroEJ is configured to connect online MicroEJ Central
+By default, MicroEJ SDK is configured to connect online MicroEJ Central
 Repository. The MicroEJ Central Repository can be downloaded locally for
 offline use. Please follow the steps described at
 `<https://developer.microej.com/central-repository/>`_.

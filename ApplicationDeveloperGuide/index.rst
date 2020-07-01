@@ -8,10 +8,12 @@ Application Developer Guide
 
    introduction
    licenses
+   workspace
    standaloneApplication
    sandboxedApplication
    virtualDevice
    mmm
+   moduleNatures
    classpath
    tools
    advanced

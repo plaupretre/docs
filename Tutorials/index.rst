@@ -6,7 +6,7 @@ Tutorials
 .. toctree::
    :maxdepth: 1
 
-   applicationTrace
+   tutorialCreateCustomPlatform
 
 ..
    | Copyright 2008-2020, MicroEJ Corp. Content in this space is free 
@@ -14,3 +14,4 @@ Tutorials
    is subject to MicroEJ Corp prior approval.
    | MicroEJ is a trademark of MicroEJ Corp. All other trademarks and 
    copyrights are the property of their respective owners.
+
