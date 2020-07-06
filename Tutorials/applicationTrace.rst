@@ -275,18 +275,37 @@ One possibility is to used constants to get rid of portion of code.
 
    - To remove the previous logging, add an if statement as follow:
    
-   .. code-block:: java 
+      .. code-block:: java 
 
-      public static void switchState(ApplicationState newState) {
-         oldState = currentState;
-         currentState = newState;
+         public static void switchState(ApplicationState newState) {
+            oldState = currentState;
+            currentState = newState;
 
-         if(Constants.getBoolean("com.mycompany.logging")) {
-            String category = "Application";
-            int logID = 2;
-            BasicMessageLogger.INSTANCE.log(Level.INFO, category, logID, oldState, currentState);
+            if(Constants.getBoolean("com.mycompany.logging")) {
+               String category = "Application";
+               int logID = 2;
+               BasicMessageLogger.INSTANCE.log(Level.INFO, category, logID, oldState, currentState);
+            }
          }
-      }
+
+   - When using the API ``ej.api.trace``, a boolean constant can be accessed named ``TRACE_ENABLED_CONSTANT_PROPERTY``.
+     This constant is true when traces are enable in the system and false otherwise.
+     It is directly included in the platform.
+
+      .. code-block:: java 
+
+         public static void switchState(ApplicationState newState) {
+            if(Constants.getBoolean(Tracer.TRACE_ENABLED_CONSTANT_PROPERTY)) {
+               tracer.recordEvent(0);
+            }
+
+            oldState = currentState;
+            currentState = newState;
+
+            if(Constants.getBoolean(Tracer.TRACE_ENABLED_CONSTANT_PROPERTY)) {
+               tracer.recordEventEnd(0);
+            }
+         }
 
 Another possibility is to use external tools.
 
