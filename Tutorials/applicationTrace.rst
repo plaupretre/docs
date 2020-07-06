@@ -14,7 +14,33 @@ performance of an application, be sure to remove or disable all traces
 so it has no impact on the performances.
 
 In the MicroEJ environment, two ways are posible for application logging: 
-real time trace based on integer event or textual tracing for more complex data.
+   
+   - event based tracing using integer events,
+   - textual tracing for more complex data.
+
+This tutorial will show how to log traces of the following code snippet using three different libraries:
+
+.. code-block:: java
+
+      public class Main {
+
+         enum ApplicationState {
+            INSTALLED, STARTED, STOPPED, UNINSTALLED
+         }
+
+         private static ApplicationState currentState;
+         private static ApplicationState oldState;
+
+         public static void main(String[] args) {
+            currentState = ApplicationState.UNINSTALLED;
+            switchState(ApplicationState.INSTALLED);
+         }
+
+         public static void switchState(ApplicationState newState) {
+            oldState = currentState;
+            currentState = newState;
+         }
+      }
 
 Event based tracing
 -------------------
@@ -26,12 +52,51 @@ to record events using named Tracer and a limited number of integer events.
 
 - To use this library in your project add the following dependency line in your module.ivy: 
 
-   ``<dependency org=“ej.api” name=trace rev=“x.y.z”/>``
+   ``<dependency org=“ej.api” name="trace" rev=“x.y.z”/>``
 
 - More informations about the API are available on the MicroEJ documentation website, 
   in the :ref:`API Trace section <apiTrace>`.
 
-- Example
+- To use this API:
+
+   - Start by initializing a ``Tracer`` object.
+
+      .. code-block:: java
+
+         private static final Tracer tracer = new Tracer("Application", 100);
+      
+      - In this case, out ``Tracer`` will be named ``Application`` and will be limited to 100 different event types.
+
+   - Now activate the trace system.
+
+      .. code-block:: java
+
+         public static void main(String[] args) {
+            Tracer.startTrace();
+
+            currentState = ApplicationState.UNINSTALLED;
+            switchState(ApplicationState.INSTALLED);
+         }
+
+   - Once initialized, you can use the methods Tracer.recordEvent(...) and Tracer.recordEventEnd(...) to record the elements of your choice.
+
+      .. code-block:: java
+
+         public static void switchState(ApplicationState newState) {
+            tracer.recordEvent(0);
+
+            oldState = currentState;
+            currentState = newState;
+
+            tracer.recordEventEnd(0);
+         }
+   
+   - The logging output will be, directly printed in the console: 
+
+      .. code-block::
+
+         [TRACE: Application] Event 0x0()
+         [TRACE: Application] Event End 0x0()
 
 - The output can be redirected to any standard output and be used by third party like, for example, Segger's SystemView.
 - A MicroEJ demo platform of the ``NXP OM13098`` board containing the SystemView support is available and downloadable 
@@ -42,24 +107,14 @@ Textual tracing
 
 In the MicroEJ SDK resources, two libraries allow the users to do textual tracing.
 
--  **ej.library.eclasspath.logging**. It is based over the
-   **java.util.logging** library and follows the same principles of
+-  ``ej.library.eclasspath.logging``. It is based over the
+   ``java.util.logging`` library and follows the same principles of
    LogManagers, Loggers, LogRecords and Handlers.
--  **ej.library.runtime.message**. This library is based on a
+-  ``ej.library.runtime.message``. This library is based on a
    MessageBuilder and a MessageLogger.
 
 Both libraries have the possibility to associate a level to the Logger
 to allow only certain levels of messages to be logged.
-
-The following examples will be using the following definitions:
-
-.. code-block:: java
-
-   enum ApplicationState {
-      INSTALLED, STARTED, STOPPED, UNINSTALLED
-   }
-
-   private static ApplicationState currentState;
 
 ej.library.eclasspath.logging library
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -100,18 +155,28 @@ module.ivy:
 
    .. code-block:: java
      
-      public static void main(String[] args) {
-         currentState = ApplicationState.UNINSTALLED;
-         switchState(ApplicationState.INSTALLED);
-      }
+      public class Main {
 
-      public static void switchState(ApplicationState newState) {
-         ApplicationState oldState = currentState;
-         currentState = newState;
+         enum ApplicationState {
+            INSTALLED, STARTED, STOPPED, UNINSTALLED
+         }
 
-         Logger logger = Logger.getLogger("ApplicationLogger");
-         logger.log(Level.INFO, "The application state has changed from " + oldState.toString() + " to "
-               + currentState.toString() + ".");
+         private static ApplicationState currentState;
+         private static ApplicationState oldState;
+
+         public static void main(String[] args) {
+            currentState = ApplicationState.UNINSTALLED;
+            switchState(ApplicationState.INSTALLED);
+         }
+
+         public static void switchState(ApplicationState newState) {
+            oldState = currentState;
+            currentState = newState;
+
+            Logger logger = Logger.getLogger("ApplicationLogger");
+            logger.log(Level.INFO, "The application state has changed from " + oldState.toString() + " to "
+                  + currentState.toString() + ".");
+         }
       }
 
    - The logging output will be, directly printed in the console: 
@@ -165,19 +230,29 @@ To use this library, add this dependency line in the project module.ivy:
    
    .. code-block:: java 
 
-      public static void main(String[] args) {
-         currentState = ApplicationState.UNINSTALLED;
+      public class Main {
 
-         switchState(ApplicationState.INSTALLED);
-      }
+         private static final String category = "Application";
+         private static final int logID = 2;
 
-      public static void switchState(ApplicationState newState) {
-         ApplicationState oldState = currentState;
-         currentState = newState;
+         enum ApplicationState {
+            INSTALLED, STARTED, STOPPED, UNINSTALLED
+         }
 
-         String category = "Application";
-         int logID = 2;
-         BasicMessageLogger.INSTANCE.log(Level.INFO, category, logID, oldState, currentState);
+         private static ApplicationState currentState;
+         private static ApplicationState oldState;
+
+         public static void main(String[] args) {
+            currentState = ApplicationState.UNINSTALLED;
+            switchState(ApplicationState.INSTALLED);
+         }
+
+         public static void switchState(ApplicationState newState) {
+            oldState = currentState;
+            currentState = newState;
+
+            BasicMessageLogger.INSTANCE.log(Level.INFO, category, logID, oldState, currentState);
+         }     
       }
 
    - The logging output will be, directly printed in the console: 
@@ -202,14 +277,8 @@ One possibility is to used constants to get rid of portion of code.
    
    .. code-block:: java 
 
-      public static void main(String[] args) {
-         currentState = ApplicationState.UNINSTALLED;
-
-         switchState(ApplicationState.INSTALLED);
-      }
-
       public static void switchState(ApplicationState newState) {
-         ApplicationState oldState = currentState;
+         oldState = currentState;
          currentState = newState;
 
          if(Constants.getBoolean("com.mycompany.logging")) {
