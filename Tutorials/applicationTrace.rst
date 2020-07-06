@@ -289,9 +289,9 @@ One possibility is to used constants to get rid of portion of code.
          }
 
    - When using the API ``ej.api.trace``, a boolean constant can be accessed named ``TRACE_ENABLED_CONSTANT_PROPERTY``.
-     This constant is true when traces are enable in the system and false otherwise.
-     It is directly included in the platform.
-
+      
+      - This constant is true when traces are enable in the system and false otherwise.
+     
       .. code-block:: java 
 
          public static void switchState(ApplicationState newState) {
@@ -306,6 +306,11 @@ One possibility is to used constants to get rid of portion of code.
                tracer.recordEventEnd(0);
             }
          }
+
+      - The value of this constant can be modified by going to ``Launch > Launch configurations`` then in the tab ``Configuration``,
+        under the option ``Runtime``, you can check the option ``Enable execution traces`` to set the value to true.
+
+         .. image:: images/tuto_application_trace_enable_execution_traces.PNG
 
 Another possibility is to use external tools.
 
