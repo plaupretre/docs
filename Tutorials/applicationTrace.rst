@@ -16,6 +16,7 @@ so it has no impact on the performances.
 In the MicroEJ environment, two ways are posible for application logging: 
    
    - event based tracing using integer events,
+   
    - textual tracing for more complex data.
 
 This tutorial will show how to log traces of the following code snippet using three different libraries:
@@ -99,6 +100,7 @@ to record events using named Tracer and a limited number of integer events.
          [TRACE: Application] Event End 0x0()
 
 - The output can be redirected to any standard output and be used by third party like, for example, Segger's SystemView.
+
 - A MicroEJ demo platform of the ``NXP OM13098`` board containing the SystemView support is available and downloadable 
   by `clicking here <https://developer.microej.com/packages/referenceimplementations/U3OER/2.0.1/OM13098-U3OER-fullPackaging-eval-2.0.1.zip>`_.
 
@@ -110,6 +112,7 @@ In the MicroEJ SDK resources, two libraries allow the users to do textual tracin
 -  ``ej.library.eclasspath.logging``. It is based over the
    ``java.util.logging`` library and follows the same principles of
    LogManagers, Loggers, LogRecords and Handlers.
+
 -  ``ej.library.runtime.message``. This library is based on a
    MessageBuilder and a MessageLogger.
 
@@ -126,20 +129,25 @@ module.ivy:
 
 -  In every application that uses this library, there is only one
    instance of a ``LogManager`` object.
+
 -  Load or create a ``Logger`` object using the method
    ``Logger.getLogger(String ID)``.
+
 -  Each ``Logger`` created with this method is saved in the
    ``LoggerManager`` and, if already created before, will be retrieved
    using their ID of type String.
+
 -  Once created, it is possible to associate a minimum level to this
    ``Logger`` so that only messages that have at least this level are
    logged. The standard levels are listed in the class
    ``java.util.logging.Level``.
+
 -  To send a request to log something, there are two possibilities.
 
    -  The first is to use the method ``myLogger.log(...)``. This method
       will send a ``LogRecord`` to the registered ``Handler`` instances
       to be logged.
+   
    -  The second is to use the log level-specific methods. For example
       ``myLogger.severe(String msg)`` will create a ``LogRecord`` with
       the level ``Level.SEVERE`` and send it to the registered
@@ -211,7 +219,9 @@ To use this library, add this dependency line in the project module.ivy:
    -  char level, the character corresponding to the level of the
       message to log. Standard levels are listed in the class
       ``ej.util.message.Level``.
+   
    -  String category, the category of the message.
+   
    -  int id, that represents the message. Combined with the category,
       it will allow the user to find the corresponding error
       description.
@@ -268,9 +278,12 @@ There is multiple possibilities to remove all traces for a production binary.
 One possibility is to used constants to get rid of portion of code.
 
 - A boolean constant declared in an if statement can be used to fully remove portion of code.
+
 - When this boolean is resolved as false, the code become unreachable and thus, will not be embedded.
+
 - You can find more information about the usage of constants in an if statement 
   by :ref:`clicking here <section.classpath.elements.Constants.ifRemoval>`.
+
 - If we consider the constant ``com.mycompany.logging`` was declared as false in a file named ``example.constants.list``.
 
    - To remove the previous logging, add an if statement as follow:
@@ -288,7 +301,8 @@ One possibility is to used constants to get rid of portion of code.
             }
          }
 
-   - When using the API ``ej.api.trace``, a boolean constant can be accessed named ``TRACE_ENABLED_CONSTANT_PROPERTY``.
+   - When using the API ``ej.api.trace``, a boolean constant can be accessed named ``TRACE_ENABLED_CONSTANT_PROPERTY`` 
+     representing the :ref:`BON Constant <section.classpath.elements.constants>` ``core.trace.enabled``.
       
       - This constant is true when traces are enable in the system and false otherwise.
      
@@ -318,11 +332,14 @@ Another possibility is to use external tools.
 
    -  ProGuard is a command-line tool that shrinks, optimizes and
       obfuscates Java code.
+   
    -  It is able to optimize bytecode as well as detect and remove
       unused instructions. For example, it can be used to remove all log
       messages in a production binary.
+   
    -  A How-To is available in the MicroEJ github for using ProGuard in 
       https://github.com/MicroEJ/How-To/tree/master/Proguard-Get-Started.
+   
    -  This example is based on removing code of elements of the library 
       **ej.library.eclasspath.logging**.
 
