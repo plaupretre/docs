@@ -496,6 +496,10 @@ legend {
   font-family: "Source Sans Pro", sans-serif;
 }
 
+h1, h2, h3, h4, h5, h5, h6 {
+  margin-block-end: 18px;
+}
+
 h1{
   font-weight: lighter;
   font-size: 50px;
@@ -722,8 +726,12 @@ footer span.commit .rst-content tt,
 
 footer {
   margin-top: 50px;
-  border-top: solid 2px #cbd3d7;
+  border-top: solid 1px #cbd3d7;
   padding-top: 24px;
+}
+
+footer hr {
+  border-top: 2px solid #cbd3d7;
 }
 
 .rst-versions {
