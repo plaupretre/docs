@@ -754,12 +754,12 @@ footer span.commit .rst-content tt,
 
 footer {
   margin-top: 50px;
-  border-top: solid 1px #cbd3d7;
+  border-top: solid 1px #e5e9eb;
   padding-top: 24px;
 }
 
 footer hr {
-  border-top: 2px solid #cbd3d7;
+  border-top: 2px solid #e5e9eb;
 }
 
 .rst-versions {
